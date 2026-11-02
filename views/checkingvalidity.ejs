@@ -1,0 +1,97 @@
+<html>
+    <body>
+        <div class="div">
+        <h1>enter the password</h1>
+        <input type="password" required class="changepassword">
+        </div>
+        <p class="para">the link is not valid</p>
+    </body>
+<script>
+
+    const token="<%= token %>"
+    fun=async ()=>{
+    document.querySelector(".div").style.display="none"
+    document.querySelector(".para").style.display="none" //completely removed
+    const res=await fetch("/verification",{
+    method:"POST",
+    headers:{"content-type":"application/json"},
+    body:JSON.stringify({token})
+   })
+
+   const data=await res.json()
+   if(data.isverified){
+    document.querySelector(".div").style.display="block" // makes the hidden element visible  and occupies the orgina; space 
+   }
+   else{
+       document.querySelector(".para").style.display="block"
+   }
+    }
+fun()
+
+
+const inputfield=document.querySelector(".changepassword")
+inputfield.addEventListener("input",(e)=>{
+    if(inputfield.value.length==6){
+        console.log("the length is 6")
+        const fun=async ()=>{
+            const status=await fetch("/updatepassword",
+                {
+                    method:"POST",
+                    headers:{"content-type":"application/json"},
+                    body:JSON.stringify({token:token,password:inputfield.value})
+                }
+            )
+            const value= await status.json()
+            if(value.update){
+                console.log("update finished")
+            }
+            else{
+                console.log("pending")
+            }
+        }
+        fun()
+    }})
+</script>
+</html>
+
+
+
+
+<!-- 
+window.location is a built-in browser object that holds information about the current page's URL. Think of it as the browser telling your JavaScript "here's exactly where we are right now."
+
+Example
+
+If your browser is currently showing this URL:
+
+https://yoursite.com:8080/reset-password.html?token=abc123&name=john#section2
+
+Then window.location breaks it down into these pieces:
+
+Property	What it gives	Example value
+window.location.href	The whole URL	"https://yoursite.com:8080/reset-password.html?token=abc123&name=john#section2"
+window.location.protocol	The protocol	"https:"
+window.location.hostname	The domain name	"yoursite.com"
+window.location.port	The port number	"8080"
+window.location.pathname	The path (file/route)	"/reset-password.html"
+window.location.search	Everything after ?	"?token=abc123&name=john"
+window.location.hash	Everything after #	"#sec -->
+<!-- window.location.href = "https://yoursite.com/login.html" -->
+
+
+
+
+<!-- Full picture with protocol added:
+Part	Like a letter's...	Example
+Protocol	The type of delivery service (regular mail vs. registered/secure mail)	https://
+Domain	The city/building the envelope goes to	yoursite.com
+Path	The specific mailbox/apartment number at that address	/verify-token
+Method	Whether it's a request or delivery	POST
+Headers	Notes stapled to the outside	{"content-type": "application/json"}
+Body	The actual letter inside the envelope	{"token":"abc123"} -->
+
+<!-- Method	Common purpose
+GET	Ask the server for data
+POST	Send data to the server for processing
+PUT/PATCH	Update existing data
+DELETE -->

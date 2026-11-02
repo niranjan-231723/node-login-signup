@@ -1,0 +1,151 @@
+
+<html>
+    <head>
+        <link rel="stylesheet" href="/form.css" >
+    </head>
+    <body>
+        <div class="flexbox">
+        <div class="innerbox">
+        <form>
+        <h1>create account</h1>
+        </br>
+        <label for="email">Enter the email </label>
+        <input id="email" name="email" type="email">
+        <div class="emailerror"> </div>
+        <label for="password">Enter the password </label>
+        <input id="password" name="password" type="password">
+        <div  class="passworderror"> </div>
+        <button  type="submit" class="signup">signup</button>
+        <button  type="button" class="signin">signin</button>
+        <button type="button" class="resetbutton">forgot password</button>
+        </form>
+        </div>
+
+        </div>
+
+    </body>
+</html>
+
+<script> 
+
+    const form=document.querySelector("form")
+    const emailerror=document.querySelector(".emailerror")
+    const passworderror=document.querySelector(".passworderror")
+    const resetbutton=document.querySelector(".resetbutton")
+    const signin=document.querySelector(".signin")
+    form.addEventListener("submit",async (e)=>{
+        emailerror.textContent=""
+        passworderror.textContent=""
+            emailerror.textContent=""
+            passworderror.textContent=""
+            console.log("submitted")
+
+        e.preventDefault()
+        try{
+            const data=await fetch("/signup",{
+            method:"POST",
+            headers:{"content-type":"application/json"},
+            body:JSON.stringify({email:form.email.value,password:form.password.value}
+
+             )})
+             
+        
+        const map=await data.json()
+
+        if (map.email){
+          emailerror.textContent=map.email
+        }
+
+        if(map.password){
+            passworderror.textContent=map.password
+        }
+    }
+    catch(err){
+            console.log(err.email)
+         }
+    })
+
+    resetbutton.addEventListener("click",()=>{
+       window.location.assign("/resetpasswordpage")
+    })
+    
+
+    signin.addEventListener("click",(e)=>{
+        window.location.assign("/signin")
+    })
+     
+</script>
+
+
+
+
+     
+<!-- // 2. submit
+
+// submit happens when a form is submitted
+    
+// 1. click
+
+// click happens when the user clicks an element. -->
+
+
+
+
+<!-- appendChild(button) → add button
+button.remove() → remove button
+classList.remove() → remove a CSS class -->
+
+
+<!-- <button type="submit">Submit</button>
+<button type="button">Reset Password</button>
+<button type="reset">Reset</button> -->
+
+
+<!-- 
+1. type="submit"
+<button type="submit">Submit</button>
+
+Purpose: Submit the form.
+
+When clicked:
+
+click button
+   ↓
+form submit event
+   ↓
+form data is sent
+
+In your code:
+
+form.addEventListener("submit", ...)
+
+will run.
+
+2. type="button"
+<button type="button">Reset Password</button>
+
+Purpose: Just a normal button.
+
+It does not submit the form.
+
+You can attach your own JavaScript:
+
+button.addEventListener("click", () => {
+    window.location.href = "/form/reset";
+});
+
+So this is what you want for your Reset Password button.
+
+3. type="reset"
+<button type="reset">Reset</button>
+
+Purpose: Reset the form's inputs to their original values.
+
+For example:
+
+<form>
+    <input value="hello">
+    <input value="12345">
+
+    <button type="reset">Reset</button>
+</form> -->

@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <title>sign in page</title>
+        <link rel="stylesheet" href="signin.css">
+    </head>
+
+    <body>
+        <div class="main">
+        <div class="box">
+        <h1> Welcome back !</h1>
+        <form>
+
+        <label for="">Enter the mail</label>
+        <input type="email" required name="email">
+        <div class="emailerror"></div>
+        <label for="">Enter the password</label>
+        <input type="password" required name="password">
+        <div class="passworderror"></div>
+        <button type="submit">submit</button>
+        </form>
+
+        </div>
+        </div>
+       
+
+    </body>
+</html>
+
+<script>
+    const automail = <%- JSON.stringify(autoemail) %>
+    const form=document.querySelector("form")
+    const emailer=document.querySelector(".emailerror")
+    const passworder=document.querySelector(".passworderror")
+    if(automail){
+        form.email.value=automail
+        form.password.focus()
+    }
+    form.addEventListener("submit",async(e)=>{
+        e.preventDefault()
+        console.log("submitted")
+
+        try{
+        const data =await fetch("/findemail",{
+            method:"POST",
+            headers:{"content-type":"application/json"},
+            body:JSON.stringify({email:form.email.value,password:form.password.value})
+        })
+         
+        const map=await data.json()
+          
+        if(map.found && !map.message){
+            return location.assign("/login")
+        }
+
+        if(!map.found){
+            return emailer.textContent="please login first"
+        }
+        else{
+            return passworder.textContent="incorrect password"
+        }
+
+  
+    }
+    catch(e){
+        console.log(e.message)
+        location.assign("/errorpage")
+    }
+
+    })
+</script>
+
+

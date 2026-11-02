@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="success.css">
+        <title>
+            password updated
+        </title>
+    </head>
+    <body>
+        <h1>password updated</h1>
+    </body>
+</html>
+
+<script>
+    let seconds=3;
+    const timer=setInterval(()=>{
+        seconds--;
+        if(seconds==0){
+            clearInterval(timer);
+            window.location.assign("/form");
+        }
+    },1000);
+</script>
